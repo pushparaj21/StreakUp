@@ -36,6 +36,10 @@ const getPastDates = (): string[] => {
   return dates;
 };
 
+const PAST_DATES = getPastDates();
+const WEEKS_DATA = Array.from({ length: WEEKS }, (_, i) =>
+  PAST_DATES.slice(i * DAYS, i * DAYS + DAYS),
+);
 const getColor = (value: number | undefined): string => {
   switch (value) {
     case 1:
@@ -52,13 +56,10 @@ const getColor = (value: number | undefined): string => {
 };
 
 export const HeatMap: React.FC<HeatMapProps> = ({ data, color }) => {
-  const dates = getPastDates();
   const { r, g, b } = hexToRgb(color);
   const scrollViewRef = useRef<ScrollViewType>(null);
 
-  const weeks: string[][] = Array.from({ length: WEEKS }, (_, i) =>
-    dates.slice(i * DAYS, i * DAYS + DAYS),
-  );
+  const weeks: string[][] = WEEKS_DATA;
   useEffect(() => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd({ animated: false });
@@ -67,7 +68,6 @@ export const HeatMap: React.FC<HeatMapProps> = ({ data, color }) => {
 
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>Heatmap (Last 52 Weeks)</Text> */}
       <View style={{ flexDirection: 'row' }}>
         {/* Weekday Labels (Sticky) */}
         {/* <View style={styles.weekDayLabels}>
