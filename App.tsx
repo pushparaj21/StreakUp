@@ -5,33 +5,19 @@
  * @format
  */
 
-import {
-  StatusBar,
-  StyleSheet,
-  useColorScheme,
-  View,
-  Text,
-  Button,
-  Pressable,
-  Dimensions,
-  FlatList,
-} from 'react-native';
+import { StatusBar, StyleSheet, View, Pressable, FlatList } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import GithubHeatMap, { IconContainer } from './components/GithubHeatMap';
+import GithubHeatMap from './components/GithubHeatMap';
 import * as LucideIcons from 'lucide-react-native';
 import db, { initTables } from './db/init';
-import { getAllHabits, getHabitLogById } from './db/queries';
 import { useState, useEffect, useRef } from 'react';
 
 import CreateHabitModal from './components/CreateHabitModal';
 import { useHabitStore } from './store/habitStore';
-import Calender from './components/Calender';
-import { IconEmojiPicker } from './components/IconEmojiPIcker';
 
 import Icon from './components/atom/LucidIcon';
 
 function App() {
-  const [habitlog, setHabitlog] = useState<any[]>([]);
   const { fetchHabits, habits } = useHabitStore();
 
   const [isModalVisible, setModalVisible] = useState(false);
@@ -65,23 +51,22 @@ function App() {
             renderItem={item => (
               <View style={{ marginBottom: 15 }}>
                 <GithubHeatMap
-                  title={item?.item.name}
-                  description={item?.item?.description}
-                  icon={
-                    <Icon
-                      color="rgb(235, 235, 235)"
-                      size={25}
-                      name={item?.item?.icon}
-                    />
-                  }
-                  color={item?.item.color}
-                  todayDone={true}
-                  habit_id={item?.item?.id}
+                  // title={item?.item.name}
+                  // description={item?.item?.description}
+                  // icon={
+                  //   <Icon
+                  //     color="rgb(235, 235, 235)"
+                  //     size={25}
+                  //     name={item?.item?.icon}
+                  //   />
+                  // }
+                  // color={item?.item.color}
+                  // habit_id={item?.item?.id}
+                  habit={item.item}
                 />
               </View>
             )}
           />
-          {/* <IconEmojiPicker onSelectEmoji={() => {}} onSelectIcon={() => {}} /> */}
         </View>
       </SafeAreaView>
     </SafeAreaProvider>

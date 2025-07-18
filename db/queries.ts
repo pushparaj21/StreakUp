@@ -46,6 +46,55 @@ export const createHabit = (
     ],
   );
 };
+export const editHabit = (
+  id: number,
+  name: string,
+  description: string,
+  trackType: string,
+  perDay: number,
+  streakInterval: string,
+  streakValue: number,
+  reminderDays: string[],
+  reminderTime: string,
+  icon: string,
+  color: string,
+  category: string,
+) => {
+  const reminderDaysJson = JSON.stringify(reminderDays);
+  const updatedAt = new Date().toISOString();
+
+  db.execute(
+    `UPDATE habits SET
+      name = ?,
+      description = ?,
+      track_type = ?,
+      per_day = ?,
+      streak_interval = ?,
+      streak_value = ?,
+      reminder_days = ?,
+      reminder_time = ?,
+      icon = ?,
+      color = ?,
+      category = ?,
+      updated_at = ?
+    WHERE id = ?`,
+    [
+      name,
+      description,
+      trackType,
+      perDay,
+      streakInterval,
+      streakValue,
+      reminderDaysJson,
+      reminderTime,
+      icon,
+      color,
+      category,
+      updatedAt,
+      id,
+    ],
+  );
+};
 
 export const getAllHabits = () => {
   const res = db.execute(

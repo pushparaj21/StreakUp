@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -24,18 +24,17 @@ import StreakSelection from './atom/StreakSelection';
 import ReminderSetector from './atom/ReminderSetector';
 import { IconEmojiPicker } from './IconEmojiPIcker';
 import db from '../db/init';
-import { createHabit } from '../db/queries';
+import { createHabit, editHabit } from '../db/queries';
 import { useHabitStore } from '../store/habitStore';
+import { HabitFormProps } from '../types/store';
 
 const { width, height } = Dimensions.get('window');
 
 export default function CreateHabitModal({
   isOpen,
   toggleOpen,
-}: {
-  isOpen: boolean;
-  toggleOpen: () => void;
-}) {
+  habitToEdit,
+}: HabitFormProps) {
   const [name, setName] = useState('');
   const [iconName, setIconName] = useState('Activity');
   const [description, setDescription] = useState('');
@@ -59,30 +58,78 @@ export default function CreateHabitModal({
   const reminderText =
     reminder?.days?.length == 0 ? 'none' : reminder?.days?.join(' , ');
 
+  useEffect(() => {
+    if (habitToEdit) {
+      setName(habitToEdit?.name);
+      setIconName(habitToEdit?.icon);
+      setDescription(habitToEdit?.description);
+      setTrackedType(habitToEdit.track_type);
+      setParDay(habitToEdit.per_day);
+      setSelectedStreak({
+        interval: habitToEdit.streak_interval,
+        value: habitToEdit.streak_value,
+      });
+      setReminder({
+        days: JSON.parse(habitToEdit.reminder_days),
+        time: habitToEdit.reminder_time,
+      });
+      setSelectedColor(habitToEdit.color);
+      setSelectedCategory(habitToEdit.category);
+    } else {
+      setName('');
+      setIconName('Activity');
+      setDescription('');
+      setTrackedType('step');
+      setParDay(1);
+      setSelectedStreak({ interval: 'none', value: 0 });
+      setReminder({ days: [], time: '08:30 AM' });
+      setSelectedColor(colorOptions[0]);
+      setSelectedCategory(null);
+    }
+  }, [habitToEdit, isOpen]);
+
   const onSave = () => {
-    createHabit(
-      name,
-      description,
-      trackedType,
-      parDay,
-      selectedStreak.interval,
-      selectedStreak.value,
-      reminder.days,
-      reminder.time,
-      iconName,
-      selectedColor,
-      selectedCategory ?? '',
-    );
+    if (habitToEdit) {
+      editHabit(
+        habitToEdit.id,
+        name,
+        description,
+        trackedType,
+        parDay,
+        selectedStreak.interval,
+        selectedStreak.value,
+        reminder.days,
+        reminder.time,
+        iconName,
+        selectedColor,
+        selectedCategory ?? '',
+      );
+    } else {
+      createHabit(
+        name,
+        description,
+        trackedType,
+        parDay,
+        selectedStreak.interval,
+        selectedStreak.value,
+        reminder.days,
+        reminder.time,
+        iconName,
+        selectedColor,
+        selectedCategory ?? '',
+      );
+    }
+
     useHabitStore.getState().fetchHabits();
-    console.log(
-      name,
-      description,
-      selectedColor,
-      parDay,
-      selectedCategory,
-      selectedStreak,
-      reminder,
-    );
+    // console.log(
+    //   name,
+    //   description,
+    //   selectedColor,
+    //   parDay,
+    //   selectedCategory,
+    //   selectedStreak,
+    //   reminder,
+    // );
   };
 
   return (
@@ -92,7 +139,9 @@ export default function CreateHabitModal({
           <TouchableOpacity onPress={toggleOpen}>
             <X size={24} color="#fff" />
           </TouchableOpacity>
-          <Text style={styles.title}>New Habbit</Text>
+          <Text style={styles.title}>
+            {habitToEdit ? 'Edit habbit' : 'New Habbit'}
+          </Text>
           <View style={{ width: 24 }} />
         </View>
         <ScrollView

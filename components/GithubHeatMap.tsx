@@ -13,32 +13,21 @@ import { useHabitLogStore } from '../store/habitLogStore';
 import db from '../db/init';
 import { ModalContainer } from './ModalContainer';
 import Calender from './Calender';
+import { HabitType } from '../types/store';
+import Icon from './atom/LucidIcon';
+import CreateHabitModal from './CreateHabitModal';
 
 type GithubHeatMapProps = {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  color: string;
-  todayDone: boolean;
-  habit_id: number;
+  habit: HabitType;
 };
 
-type HabitLog = {
-  date: string; // ISO date string
-  value: number; // typically between 0 and 1
-};
-const GithubHeatMap = ({
-  title,
-  description,
-  icon,
-  color,
-  todayDone,
-  habit_id,
-}: GithubHeatMapProps) => {
+const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
+  const { color, description, icon, id: habit_id, name } = habit;
   const { r, g, b } = hexToRgb(color);
   const { logs: allLogs, loadLogs, updateLog } = useHabitLogStore();
   const logs = allLogs[habit_id] ?? [];
   const [modalCalenderOpen, setModalCalenderOpen] = useState(false);
+  const [modalEditOpen, setModalEditOpen] = useState(false);
 
   useEffect(() => {
     if (!allLogs[habit_id]) loadLogs(habit_id);
@@ -118,9 +107,12 @@ const GithubHeatMap = ({
         }}
       >
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <IconContainer icon={icon} bg={`rgba(${r},${g},${b},0.1)`} />
+          <IconContainer
+            icon={<Icon name={icon} color="rgb(235, 235, 235)" size={25} />}
+            bg={`rgba(${r},${g},${b},0.1)`}
+          />
           <View style={{ marginLeft: 15 }}>
-            <Text style={styles.textTitle}>{title}</Text>
+            <Text style={styles.textTitle}>{name}</Text>
             <Text style={styles.textDec}>{description}</Text>
           </View>
         </View>
@@ -160,9 +152,9 @@ const GithubHeatMap = ({
             }}
           >
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              {icon}
+              {<Icon name={icon} color="rgb(235, 235, 235)" size={25} />}
               <View style={{ marginLeft: 15 }}>
-                <Text style={styles.textTitle}>{title}</Text>
+                <Text style={styles.textTitle}>{name}</Text>
                 <Text style={styles.textDec}>{description}</Text>
               </View>
             </View>
@@ -179,7 +171,24 @@ const GithubHeatMap = ({
               <X size={15} color="rgb(235, 235, 235)" strokeWidth={3} />
             </Pressable>
           </View>
+
           <View>{GridData}</View>
+          <Pressable onPress={() => setModalEditOpen(true)}>
+            <Text style={{ color: 'white', margin: 40 }}>hihhi</Text>
+          </Pressable>
+          {/* <ModalContainer
+            onClose={() => setModalEditOpen(false)}
+            isVisible={modalEditOpen}
+          >
+            <View style={{ flex: 1, backgroundColor: 'red', zIndex: 100 }}>
+              <Text>hi pushpa</Text>
+            </View>
+          </ModalContainer> */}
+          <CreateHabitModal
+            isOpen={modalEditOpen}
+            toggleOpen={() => setModalEditOpen(false)}
+            habitToEdit={habit}
+          />
 
           <Calender data={habit_log} color={color} onDayPress={toggleDayLog} />
         </View>

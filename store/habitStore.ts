@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 import { getAllHabits } from '../db/queries';
+import { HabitType } from '../types/store';
 
 type HabitStore = {
-  habits: any[];
+  habits: HabitType[];
   fetchHabits: () => Promise<void>;
   refresh: () => void;
 };
