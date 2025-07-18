@@ -6,7 +6,7 @@ import {
   Platform,
   Button,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { weekDayList } from '../../constant/staticData';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -21,10 +21,9 @@ interface ReminderProps {
 }
 
 const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
-  // const [reminder, setReminder] = useState({
-  //   days: ['sum', 'mon'],
-  //   time: '',
-  // });
+  // const [time, setTime] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const time = parseTimeStringToDate(reminder.time);
 
   const onDayClick = (day: string) => {
     const exists = reminder?.days?.includes(day);
@@ -39,13 +38,11 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
     setReminder({ ...reminder, days: updatedDays });
   };
 
-  const [time, setTime] = useState(new Date());
-  const [show, setShow] = useState(false);
-
   const onChange = (event: any, selectedTime?: Date) => {
     setShow(false);
+
     if (selectedTime) {
-      setTime(selectedTime);
+      setReminder({ ...reminder, time: formatTimeToString(selectedTime) });
     }
   };
 
@@ -117,3 +114,28 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
+
+const formatTimeToString = (date: Date): string => {
+  const hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const suffix = hours >= 12 ? 'PM' : 'AM';
+  const formattedHour = (hours % 12 || 12).toString().padStart(2, '0'); // 12-hour format
+  return `${formattedHour}:${minutes} ${suffix}`; // e.g., "08:30 AM"
+};
+
+const parseTimeStringToDate = (timeStr: string): Date => {
+  const [timePart, period] = timeStr.split(' '); // "08:30", "AM"
+  const [hourStr, minuteStr] = timePart.split(':');
+  let hours = parseInt(hourStr);
+  const minutes = parseInt(minuteStr);
+
+  if (period === 'PM' && hours !== 12) hours += 12;
+  if (period === 'AM' && hours === 12) hours = 0;
+
+  const date = new Date();
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  date.setSeconds(0);
+  date.setMilliseconds(0);
+  return date;
+};
