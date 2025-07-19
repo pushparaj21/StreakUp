@@ -23,14 +23,19 @@ import CreateHabitModal from './components/CreateHabitModal';
 import { useHabitStore } from './store/habitStore';
 
 import Icon from './components/atom/LucidIcon';
+import Setting from './components/Setting';
 
 function App() {
   const { fetchHabits, habits } = useHabitStore();
 
   const [isModalVisible, setModalVisible] = useState(false);
+  const [isSettingVisible, setIsSettingVisible] = useState(false);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  const toggleSetting = () => {
+    setIsSettingVisible(!isSettingVisible);
   };
 
   useEffect(() => {
@@ -42,11 +47,12 @@ function App() {
     <SafeAreaProvider>
       <SafeAreaView style={{ flex: 1, backgroundColor: '#151518' }}>
         <CreateHabitModal isOpen={isModalVisible} toggleOpen={toggleModal} />
+        <Setting isVisible={isSettingVisible} toggleSetting={toggleSetting} />
         <View style={styles.container}>
           <StatusBar barStyle={true ? 'light-content' : 'dark-content'} />
           <View style={styles.header}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <Pressable onPress={toggleModal}>
+              <Pressable onPress={toggleSetting}>
                 <LucideIcons.Settings size={23} color={'rgb(235, 235, 235)'} />
               </Pressable>
               <Text style={styles.appNameLeft}>
