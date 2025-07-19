@@ -121,15 +121,6 @@ export default function CreateHabitModal({
     }
 
     useHabitStore.getState().fetchHabits();
-    // console.log(
-    //   name,
-    //   description,
-    //   selectedColor,
-    //   parDay,
-    //   selectedCategory,
-    //   selectedStreak,
-    //   reminder,
-    // );
   };
 
   return (
@@ -153,7 +144,7 @@ export default function CreateHabitModal({
           }}
         >
           <View>
-            <ImageBackground source={require('./../assets/bg.png')}>
+            <ImageBackground source={require('./../assets/bg2.png')}>
               <View
                 style={{
                   backgroundColor: 'rgba(0, 0, 0, 0.47)',
@@ -196,7 +187,7 @@ export default function CreateHabitModal({
                 />
               </View>
             </ModalContainer>
-            <InputText value={name} onChangeText={setName} label="name" />
+            <InputText value={name} onChangeText={setName} label="Name" />
             <InputText
               value={description}
               onChangeText={setDescription}
@@ -248,7 +239,7 @@ export default function CreateHabitModal({
                   />
                 </InputTextWithLeftArrowModal>
 
-                <Text style={styles.subLabel}>Category</Text>
+                <Text style={styles.label}>Category</Text>
                 <TouchableOpacity onPress={() => setCategoryModalVisible(true)}>
                   <Text style={styles.placeholderBox}>
                     {selectedCategory || 'Select Category'}
@@ -275,8 +266,26 @@ export default function CreateHabitModal({
           </View>
         </ScrollView>
         <View style={styles.footer}>
-          <TouchableOpacity style={styles.saveButton} onPress={onSave}>
-            <Text>Save</Text>
+          <TouchableOpacity
+            style={
+              name != '' ? styles.saveButtonActive : styles.saveButtonInActive
+            }
+            onPress={() => {
+              if (name != '') {
+                onSave();
+                toggleOpen();
+              }
+            }}
+          >
+            <Text
+              style={
+                name != ''
+                  ? styles.saveButtonActiveText
+                  : styles.saveButtonInActiveText
+              }
+            >
+              Save
+            </Text>
           </TouchableOpacity>
         </View>
       </ModalContainer>
@@ -326,7 +335,7 @@ export default function CreateHabitModal({
           >
             <Text
               style={{
-                color: 'white',
+                color: '#F1F1F1',
                 textAlign: 'center',
                 fontSize: 20,
                 fontWeight: '600',
@@ -344,14 +353,14 @@ export default function CreateHabitModal({
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
     position: 'relative',
     left: 0,
     right: 0,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    backgroundColor: 'rgb(17, 17, 18)',
+    backgroundColor: '#151518',
   },
   footer: {
     position: 'relative',
@@ -362,18 +371,19 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '#fff',
-    fontWeight: '600',
+    color: '#F1F1F1',
+    fontWeight: '500',
+    marginLeft: 30,
   },
   titlelight: {
     fontSize: 18,
-    color: '#fff',
+    color: '#F1F1F1',
     fontWeight: '500',
     marginBottom: 10,
   },
   subTitle: {
     fontSize: 16,
-    color: '#fff',
+    color: '#F1F1F1',
     fontWeight: '400',
   },
   input: {
@@ -384,14 +394,16 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   label: {
-    color: 'rgb(206,206,207)',
+    color: '#F1F1F1',
     paddingLeft: 10,
     paddingBottom: 8,
     paddingTop: 10,
-    fontWeight: 500,
+    fontSize: 12,
+    marginTop: 8,
   },
   colorGrid: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     flexWrap: 'wrap',
     gap: 10,
   },
@@ -402,7 +414,7 @@ const styles = StyleSheet.create({
     // margin: 6,
   },
   selectedColor: {
-    borderWidth: 3,
+    borderWidth: 2,
     borderColor: '#fff',
   },
   advancedToggle: {
@@ -419,19 +431,44 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   placeholderBox: {
-    backgroundColor: '#222',
-    color: '#fff',
+    borderColor: '#27272A',
+    backgroundColor: '#09090B',
+    borderRadius: 10,
+    borderWidth: 1,
+    color: '#F1F1F1',
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    fontSize: 16,
+  },
+  saveButtonActive: {
+    backgroundColor: '#9333EA',
     padding: 12,
     borderRadius: 10,
-  },
-  saveButton: {
-    backgroundColor: '#444',
-    padding: 16,
-    borderRadius: 12,
     alignItems: 'center',
     marginHorizontal: 20,
     marginBottom: 30,
   },
+  saveButtonInActive: {
+    backgroundColor: '#151518',
+    padding: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginHorizontal: 20,
+    marginBottom: 30,
+    borderWidth: 1,
+    borderColor: '#27272A',
+  },
+  saveButtonActiveText: {
+    color: '#F1F1F1',
+    fontSize: 20,
+    fontWeight: 600,
+  },
+  saveButtonInActiveText: {
+    color: '#9E9E9E',
+    fontSize: 20,
+    fontWeight: 600,
+  },
+
   saveButtonText: {
     color: '#999',
     fontSize: 16,

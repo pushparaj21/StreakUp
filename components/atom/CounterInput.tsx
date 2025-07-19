@@ -74,10 +74,12 @@ const styles = StyleSheet.create({
     columnGap: 10,
   },
   label: {
-    color: '#ccc',
-    fontSize: 14,
-    marginBottom: 10,
-    marginTop: 10,
+    color: '#F1F1F1',
+    paddingLeft: 10,
+    paddingBottom: 8,
+    paddingTop: 10,
+    fontSize: 12,
+    marginTop: 8,
   },
   input: {
     borderColor: 'rgb(25,25,26)',

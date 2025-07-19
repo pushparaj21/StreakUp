@@ -76,12 +76,10 @@ export function InputTextWithLeftArrowModal({
         </Pressable>
       </View>
       <ModalContainer isVisible={isVisible} onClose={toggleModal}>
-        <View
-          style={[{ backgroundColor: 'rgb(17, 17, 18)', flex: 1, padding: 10 }]}
-        >
+        <View style={[{ backgroundColor: '#151518', flex: 1, padding: 10 }]}>
           <View style={styles.header}>
             <TouchableOpacity onPress={toggleModal}>
-              <ChevronLeft size={24} color="#fff" />
+              <ChevronLeft size={20} color="#fff" />
             </TouchableOpacity>
             <Text style={styles.title}>{modalTitle}</Text>
             <View style={{ width: 24 }} />
@@ -96,30 +94,32 @@ export function InputTextWithLeftArrowModal({
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     alignItems: 'center',
   },
   title: {
     fontSize: 20,
-    color: '#fff',
-    fontWeight: '600',
+    color: '#F1F1F1',
+    fontWeight: '400',
+    marginLeft: 30,
   },
   container: {},
   input: {
-    borderColor: 'rgb(25,25,26)',
-    backgroundColor: 'rgb(10,10,11)',
+    borderColor: '#27272A',
+    backgroundColor: '#09090B',
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderWidth: 1,
-    color: 'white',
+    color: '#F1F1F1',
     fontSize: 16,
   },
   label: {
-    color: 'rgb(206,206,207)',
+    color: '#F1F1F1',
     paddingLeft: 10,
     paddingBottom: 8,
     paddingTop: 10,
-    fontWeight: 500,
+    fontSize: 12,
+    marginTop: 8,
   },
 });

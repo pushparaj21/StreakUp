@@ -5,7 +5,14 @@
  * @format
  */
 
-import { StatusBar, StyleSheet, View, Pressable, FlatList } from 'react-native';
+import {
+  StatusBar,
+  StyleSheet,
+  View,
+  Pressable,
+  FlatList,
+  Text,
+} from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import GithubHeatMap from './components/GithubHeatMap';
 import * as LucideIcons from 'lucide-react-native';
@@ -33,16 +40,22 @@ function App() {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: 'rgb(0,0,0)' }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#151518' }}>
         <CreateHabitModal isOpen={isModalVisible} toggleOpen={toggleModal} />
         <View style={styles.container}>
           <StatusBar barStyle={true ? 'light-content' : 'dark-content'} />
           <View style={styles.header}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <Pressable onPress={toggleModal}>
+                <LucideIcons.Settings size={23} color={'rgb(235, 235, 235)'} />
+              </Pressable>
+              <Text style={styles.appNameLeft}>
+                Streak<Text style={styles.appNameRight}>Up</Text>
+              </Text>
+            </View>
+
             <Pressable onPress={toggleModal}>
-              <LucideIcons.Settings size={27} color={'rgb(235, 235, 235)'} />
-            </Pressable>
-            <Pressable onPress={toggleModal}>
-              <LucideIcons.CirclePlus size={27} color={'rgb(235, 235, 235)'} />
+              <LucideIcons.CirclePlus size={24} color={'rgb(235, 235, 235)'} />
             </Pressable>
           </View>
 
@@ -50,20 +63,7 @@ function App() {
             data={habits}
             renderItem={item => (
               <View style={{ marginBottom: 15 }}>
-                <GithubHeatMap
-                  // title={item?.item.name}
-                  // description={item?.item?.description}
-                  // icon={
-                  //   <Icon
-                  //     color="rgb(235, 235, 235)"
-                  //     size={25}
-                  //     name={item?.item?.icon}
-                  //   />
-                  // }
-                  // color={item?.item.color}
-                  // habit_id={item?.item?.id}
-                  habit={item.item}
-                />
+                <GithubHeatMap habit={item.item} />
               </View>
             )}
           />
@@ -74,11 +74,20 @@ function App() {
 }
 
 const styles = StyleSheet.create({
+  appNameLeft: {
+    color: '#F1F1F1',
+    marginLeft: 10,
+    fontSize: 20,
+    fontWeight: 600,
+  },
+  appNameRight: {
+    color: '#A855F7',
+  },
   container: {
     flex: 1,
-    backgroundColor: 'rgb(0,0,0)',
+    backgroundColor: '#151518',
     color: 'white',
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
   },
   header: {
     display: 'flex',

@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Platform,
   Button,
+  Pressable,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { weekDayList } from '../../constant/staticData';
@@ -21,7 +22,6 @@ interface ReminderProps {
 }
 
 const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
-  // const [time, setTime] = useState(new Date());
   const [show, setShow] = useState(false);
   const time = parseTimeStringToDate(reminder.time);
 
@@ -37,6 +37,12 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
     }
     setReminder({ ...reminder, days: updatedDays });
   };
+  const onSelectAllDay = () => {
+    setReminder({ ...reminder, days: [...weekDayList] });
+  };
+  const onDeselectAllDay = () => {
+    setReminder({ ...reminder, days: [] });
+  };
 
   const onChange = (event: any, selectedTime?: Date) => {
     setShow(false);
@@ -48,6 +54,9 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
 
   return (
     <View style={styles.container}>
+      <Text style={{ color: '#F1F1F1', marginBottom: 10, fontSize: 12 }}>
+        Days
+      </Text>
       <View style={styles.dayWrapper}>
         {weekDayList.map(day => {
           const isSelected = reminder.days.includes(day);
@@ -62,17 +71,43 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
           );
         })}
       </View>
+      <Text
+        style={{ color: '#C084FC', textAlign: 'right' }}
+        onPress={() => {
+          if (reminder.days.length == 7) {
+            onDeselectAllDay();
+          } else {
+            onSelectAllDay();
+          }
+        }}
+      >
+        {reminder.days.length == 7 ? 'Deselect all' : 'Select all'}
+      </Text>
       <View>
-        <Text
-          style={[styles.day, styles.selected]}
+        <Text style={{ color: '#F1F1F1', marginBottom: 10, fontSize: 12 }}>
+          Time
+        </Text>
+        <Pressable
+          style={[
+            styles.day,
+            {
+              paddingVertical: 15,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+          ]}
           onPress={() => setShow(true)}
         >
-          {time.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true,
-          })}
-        </Text>
+          <Text style={{ fontSize: 14, color: '#F1F1F1' }}>Pick a time</Text>
+          <Text style={{ fontSize: 14, color: '#C084FC' }}>
+            {time.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: true,
+            })}
+          </Text>
+        </Pressable>
         {show && (
           <DateTimePicker
             value={time}
@@ -98,20 +133,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
+    rowGap: 5,
+    marginBottom: 5,
   },
   text: {
     color: 'rgb(232, 243, 243)',
     fontSize: 14,
   },
   selected: {
-    backgroundColor: 'rgb(150, 19, 211)',
+    backgroundColor: '#9333EA',
   },
   day: {
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    // borderColor: 'rgb(250, 250, 250)',
+    borderColor: '#27272A',
+    backgroundColor: '#09090B',
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
     borderWidth: 1,
-    borderRadius: 5,
+    color: '#F1F1F1',
   },
 });
 

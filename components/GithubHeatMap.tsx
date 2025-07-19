@@ -176,14 +176,7 @@ const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
           <Pressable onPress={() => setModalEditOpen(true)}>
             <Text style={{ color: 'white', margin: 40 }}>hihhi</Text>
           </Pressable>
-          {/* <ModalContainer
-            onClose={() => setModalEditOpen(false)}
-            isVisible={modalEditOpen}
-          >
-            <View style={{ flex: 1, backgroundColor: 'red', zIndex: 100 }}>
-              <Text>hi pushpa</Text>
-            </View>
-          </ModalContainer> */}
+
           <CreateHabitModal
             isOpen={modalEditOpen}
             toggleOpen={() => setModalEditOpen(false)}
@@ -200,13 +193,17 @@ const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
 export default GithubHeatMap;
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgb(28,28,30)',
+    // backgroundColor: 'rgb(28,28,30)',
+    backgroundColor: '#09090B',
+    borderColor: '#27272A',
+    borderWidth: 1,
     padding: 10,
-    borderRadius: 15,
+    borderRadius: 10,
   },
   iconContainer: {
-    // backgroundColor: 'rgba(217,127,242,0.10)',
     borderRadius: 10,
+    borderColor: '#27272A',
+    borderWidth: 1,
     width: 50,
     height: 50,
     alignItems: 'center',

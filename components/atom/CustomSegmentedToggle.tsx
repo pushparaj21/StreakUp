@@ -45,7 +45,7 @@ const CustomSegmentedToggle: React.FC<Props> = ({
     setContainerWidth(e.nativeEvent.layout.width);
   };
 
-  const segmentWidth = containerWidth / options.length;
+  const segmentWidth = containerWidth / options.length - 5;
 
   const translateX = animation.interpolate({
     inputRange: options.map((_, i) => i),
@@ -95,25 +95,28 @@ const styles = StyleSheet.create({
     // padding: 16,
   },
   label: {
-    color: '#ccc',
-    fontSize: 14,
-    marginBottom: 10,
-    marginTop: 10,
+    color: '#F1F1F1',
+    paddingLeft: 10,
+    paddingBottom: 8,
+    paddingTop: 10,
+    fontSize: 12,
+    marginTop: 8,
   },
   container: {
     flexDirection: 'row',
-    backgroundColor: '#1c1c1e',
-    borderRadius: 12,
+    borderColor: '#27272A',
+    backgroundColor: '#09090B',
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: '#333',
     overflow: 'hidden',
     position: 'relative',
   },
   slider: {
     position: 'absolute',
-    top: 0,
-    bottom: 0,
-    backgroundColor: '#111',
+    left: 4,
+    top: 5,
+    bottom: 5,
+    backgroundColor: '#151518',
     borderRadius: 10,
     zIndex: 0,
   },
