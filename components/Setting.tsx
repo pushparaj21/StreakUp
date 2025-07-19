@@ -2,7 +2,9 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import React from 'react';
 import { ModalContainer } from './ModalContainer';
 import { ChevronLeft, X } from 'lucide-react-native';
-
+import DeviceInfo from 'react-native-device-info';
+const version = DeviceInfo.getVersion();
+const buildNumber = DeviceInfo.getBuildNumber();
 const Setting = ({
   isVisible,
   toggleSetting,
@@ -26,7 +28,10 @@ const Setting = ({
           <Text style={styles.comingSoon}>⚙️ Features coming soon...</Text>
 
           <Text style={styles.version}>
-            App Version: <Text style={styles.bold}>N/A</Text>
+            App Version:{' '}
+            <Text style={styles.bold}>
+              {DeviceInfo.getVersion()} (Build {DeviceInfo.getBuildNumber()})
+            </Text>
           </Text>
 
           <Text style={styles.footer}>
