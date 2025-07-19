@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, { useEffect, useMemo, useState } from 'react';
-import { Music, Check, Cross, X } from 'lucide-react-native';
+import { Music, Check, Cross, X, Edit } from 'lucide-react-native';
 import { HeatMap } from './Heatmap';
 import { getHabitLogById } from '../db/queries';
 import { useHabitLogStore } from '../store/habitLogStore';
@@ -173,10 +173,16 @@ const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
           </View>
 
           <View>{GridData}</View>
-          <Pressable onPress={() => setModalEditOpen(true)}>
-            <Text style={{ color: 'white', margin: 40 }}>hihhi</Text>
-          </Pressable>
+          <View style={styles.state}>
+            <Pressable
+              onPress={() => setModalEditOpen(true)}
+              style={styles.editButton}
+            >
+              <Edit size={15} color="rgb(235, 235, 235)" strokeWidth={2} />
+            </Pressable>
+          </View>
 
+          <View style={styles.devider}></View>
           <CreateHabitModal
             isOpen={modalEditOpen}
             toggleOpen={() => setModalEditOpen(false)}
@@ -192,6 +198,11 @@ const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
 
 export default GithubHeatMap;
 const styles = StyleSheet.create({
+  devider: {
+    borderBottomWidth: 1.5,
+    borderBottomColor: '#27272A',
+    marginVertical: 20,
+  },
   container: {
     // backgroundColor: 'rgb(28,28,30)',
     backgroundColor: '#09090B',
@@ -223,6 +234,22 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     opacity: 0.8,
     letterSpacing: 0.5,
+  },
+  editButton: {
+    backgroundColor: 'black',
+    padding: 4,
+    borderColor: 'rgb(41, 41, 43)',
+    borderWidth: 1,
+    borderRadius: 5,
+    width: 30,
+    height: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  state: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    marginTop: 10,
   },
 });
 
