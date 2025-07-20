@@ -8,17 +8,13 @@ type CalendarProps = {
 };
 
 const Calender = ({ data, color, onDayPress }: CalendarProps) => {
-  const [selected, setSelected] = useState('');
   const mapedData = mapDatesForCalendar(data, color);
-  console.log('u90', mapedData);
 
   const currentDay = new Date().toISOString().split('T')[0];
   return (
     <Calendar
       onDayPress={day => {
-        // setSelected(day.dateString);
         onDayPress(day.dateString);
-        console.log(day.dateString);
       }}
       markedDates={mapedData}
       theme={{
