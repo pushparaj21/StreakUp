@@ -12,7 +12,7 @@ import { weekDayList } from '../../constant/staticData';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface Reminder {
-  days: string[];
+  days: number[];
   time: string;
 }
 
@@ -25,7 +25,7 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
   const [show, setShow] = useState(false);
   const time = parseTimeStringToDate(reminder.time);
 
-  const onDayClick = (day: string) => {
+  const onDayClick = (day: number) => {
     const exists = reminder?.days?.includes(day);
     let updatedDays;
     if (exists) {
@@ -38,7 +38,7 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
     setReminder({ ...reminder, days: updatedDays });
   };
   const onSelectAllDay = () => {
-    setReminder({ ...reminder, days: [...weekDayList] });
+    setReminder({ ...reminder, days: [0, 1, 2, 3, 4, 5, 6] });
   };
   const onDeselectAllDay = () => {
     setReminder({ ...reminder, days: [] });
@@ -58,13 +58,14 @@ const ReminderSetector = ({ reminder, setReminder }: ReminderProps) => {
         Days
       </Text>
       <View style={styles.dayWrapper}>
-        {weekDayList.map(day => {
-          const isSelected = reminder.days.includes(day);
+        {weekDayList.map((day, index) => {
+          const isSelected = reminder.days.includes(index); // index is the number (0–6)
+
           return (
             <TouchableOpacity
-              style={[styles.day, isSelected && styles.selected]}
               key={day}
-              onPress={() => onDayClick(day)}
+              style={[styles.day, isSelected && styles.selected]}
+              onPress={() => onDayClick(index)}
             >
               <Text style={styles.text}>{day}</Text>
             </TouchableOpacity>
@@ -155,21 +156,15 @@ const styles = StyleSheet.create({
 });
 
 const formatTimeToString = (date: Date): string => {
-  const hours = date.getHours();
+  const hours = date.getHours().toString().padStart(2, '0'); // 00 to 23
   const minutes = date.getMinutes().toString().padStart(2, '0');
-  const suffix = hours >= 12 ? 'PM' : 'AM';
-  const formattedHour = (hours % 12 || 12).toString().padStart(2, '0'); // 12-hour format
-  return `${formattedHour}:${minutes} ${suffix}`; // e.g., "08:30 AM"
+  return `${hours}:${minutes}`;
 };
 
 const parseTimeStringToDate = (timeStr: string): Date => {
-  const [timePart, period] = timeStr.split(' '); // "08:30", "AM"
-  const [hourStr, minuteStr] = timePart.split(':');
-  let hours = parseInt(hourStr);
-  const minutes = parseInt(minuteStr);
-
-  if (period === 'PM' && hours !== 12) hours += 12;
-  if (period === 'AM' && hours === 12) hours = 0;
+  const [hourStr, minuteStr] = timeStr.split(':');
+  const hours = parseInt(hourStr, 10);
+  const minutes = parseInt(minuteStr, 10);
 
   const date = new Date();
   date.setHours(hours);

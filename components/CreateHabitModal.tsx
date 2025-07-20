@@ -18,7 +18,12 @@ import SwipeableModalContainer, { ModalContainer } from './ModalContainer';
 import InputText, { InputTextWithLeftArrowModal } from './atom/InputText';
 import CustomSegmentedToggle from './atom/CustomSegmentedToggle';
 import CounterInput from './atom/CounterInput';
-import { colorOptions, categories, streakList } from '../constant/staticData';
+import {
+  colorOptions,
+  categories,
+  streakList,
+  weekDayList,
+} from '../constant/staticData';
 import Icon from './atom/LucidIcon';
 import StreakSelection from './atom/StreakSelection';
 import ReminderSetector from './atom/ReminderSetector';
@@ -27,6 +32,10 @@ import db from '../db/init';
 import { createHabit, editHabit } from '../db/queries';
 import { useHabitStore } from '../store/habitStore';
 import { HabitFormProps } from '../types/store';
+import {
+  cancelHabitNotifications,
+  scheduleHabitNotifications,
+} from '../helper/scheduleHabitNotifications';
 
 const { width, height } = Dimensions.get('window');
 
@@ -56,7 +65,12 @@ export default function CreateHabitModal({
   const [iconPickerModalOpen, setIconPickerModalOpen] = useState(false);
 
   const reminderText =
-    reminder?.days?.length == 0 ? 'none' : reminder?.days?.join(' , ');
+    reminder?.days?.length === 0
+      ? 'none'
+      : reminder.days
+          .sort((a, b) => a - b)
+          .map(dayIndex => weekDayList[dayIndex])
+          .join(', ');
 
   useEffect(() => {
     if (habitToEdit) {
@@ -82,14 +96,21 @@ export default function CreateHabitModal({
       setTrackedType('step');
       setParDay(1);
       setSelectedStreak({ interval: 'none', value: 0 });
-      setReminder({ days: [], time: '08:30 AM' });
+      setReminder({ days: [], time: '08:30' });
       setSelectedColor(colorOptions[0]);
       setSelectedCategory(null);
     }
   }, [habitToEdit, isOpen]);
 
-  const onSave = () => {
+  const onSave = async () => {
+    let notificationIds = await scheduleHabitNotifications({
+      name,
+      reminderDays: reminder.days,
+      reminderTime: reminder.time,
+    });
+
     if (habitToEdit) {
+      await cancelHabitNotifications(JSON.parse(habitToEdit.notificationIds));
       editHabit(
         habitToEdit.id,
         name,
@@ -100,6 +121,7 @@ export default function CreateHabitModal({
         selectedStreak.value,
         reminder.days,
         reminder.time,
+        notificationIds,
         iconName,
         selectedColor,
         selectedCategory ?? '',
@@ -114,6 +136,7 @@ export default function CreateHabitModal({
         selectedStreak.value,
         reminder.days,
         reminder.time,
+        notificationIds,
         iconName,
         selectedColor,
         selectedCategory ?? '',
@@ -493,6 +516,6 @@ const styles = StyleSheet.create({
 });
 
 interface Reminder {
-  days: string[] | [];
+  days: number[] | [];
   time: string;
 }

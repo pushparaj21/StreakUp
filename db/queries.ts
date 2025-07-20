@@ -7,13 +7,15 @@ export const createHabit = (
   perDay: number,
   streakInterval: string,
   streakValue: number,
-  reminderDays: string[],
+  reminderDays: number[],
   reminderTime: string,
+  notificationIds: string[],
   icon: string,
   color: string,
   category: string,
 ) => {
   const reminderDaysJson = JSON.stringify(reminderDays);
+  const notificationIdsJson = JSON.stringify(notificationIds);
   // const categoryJson = JSON.stringify(category);
   const now = new Date().toISOString();
   const createdAt = now;
@@ -24,9 +26,9 @@ export const createHabit = (
   db.execute(
     `INSERT INTO habits (
       name, description, track_type, per_day, streak_interval, streak_value,
-      reminder_days, reminder_time, icon, color, category,
+      reminder_days, reminder_time , notificationIds, icon, color, category,
       display_order, created_at, updated_at, archived
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     [
       name,
       description,
@@ -36,6 +38,7 @@ export const createHabit = (
       streakValue,
       reminderDaysJson,
       reminderTime,
+      notificationIdsJson,
       icon,
       color,
       category,
@@ -54,13 +57,15 @@ export const editHabit = (
   perDay: number,
   streakInterval: string,
   streakValue: number,
-  reminderDays: string[],
+  reminderDays: number[],
   reminderTime: string,
+  notificationIds: string[],
   icon: string,
   color: string,
   category: string,
 ) => {
   const reminderDaysJson = JSON.stringify(reminderDays);
+  const notificationIdsJson = JSON.stringify(notificationIds);
   const updatedAt = new Date().toISOString();
 
   db.execute(
@@ -73,6 +78,7 @@ export const editHabit = (
       streak_value = ?,
       reminder_days = ?,
       reminder_time = ?,
+      notificationIds= ?,
       icon = ?,
       color = ?,
       category = ?,
@@ -87,6 +93,7 @@ export const editHabit = (
       streakValue,
       reminderDaysJson,
       reminderTime,
+      notificationIdsJson,
       icon,
       color,
       category,

@@ -17,6 +17,7 @@ export const initTables = () => {
       streak_value INTEGER DEFAULT 0,    -- selectedStreak.value
       reminder_days TEXT,                -- JSON string: '["mon","wed"]'
       reminder_time TEXT,                -- e.g. '09:00 AM'
+      notificationIds TEXT,
       icon Text,
       color Text,
       category TEXT,                     -- selectedCategory

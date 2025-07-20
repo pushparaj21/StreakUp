@@ -11,6 +11,7 @@ export type HabitType = {
   streak_value: number;
   reminder_time: string;
   reminder_days: string;
+  notificationIds: string;
   color: string;
   category: string;
   display_order: number;
