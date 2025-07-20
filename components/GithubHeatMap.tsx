@@ -106,14 +106,16 @@ const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
           marginBottom: 15,
         }}
       >
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
           <IconContainer
             icon={<Icon name={icon} color="rgb(235, 235, 235)" size={25} />}
             bg={`rgba(${r},${g},${b},0.1)`}
           />
-          <View style={{ marginLeft: 15 }}>
+          <View style={{ marginLeft: 15, flex: 1, marginRight: 15 }}>
             <Text style={styles.textTitle}>{name}</Text>
-            <Text style={styles.textDec}>{description}</Text>
+            <Text style={styles.textDec} numberOfLines={1} ellipsizeMode="tail">
+              {description}
+            </Text>
           </View>
         </View>
         <Pressable onPress={toggleTodayLog}>
@@ -149,13 +151,22 @@ const GithubHeatMap = ({ habit }: GithubHeatMapProps) => {
               alignItems: 'center',
               justifyContent: 'space-between',
               marginBottom: 15,
+              // flex: 1,
             }}
           >
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View
+              style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}
+            >
               {<Icon name={icon} color="rgb(235, 235, 235)" size={25} />}
-              <View style={{ marginLeft: 15 }}>
+              <View style={{ marginHorizontal: 15, flex: 1 }}>
                 <Text style={styles.textTitle}>{name}</Text>
-                <Text style={styles.textDec}>{description}</Text>
+                <Text
+                  style={styles.textDec}
+                  numberOfLines={1}
+                  ellipsizeMode="tail"
+                >
+                  {description}
+                </Text>
               </View>
             </View>
             <Pressable
